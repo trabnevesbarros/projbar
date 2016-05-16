@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-class ProdutosController extends AppController {
+class BalancosController extends AppController {
 
-    public $helpers = array('Html', 'Form', 'Paginator');
+    public $helpers = array('Html', 'Form', 'Paginator', 'Time');
     public $paginate = array(
         'limit' => 12
     );
@@ -16,20 +16,25 @@ class ProdutosController extends AppController {
         'Search.Prg',
         'Paginator'
     );
-    public $presetVars = array('name_search' => array('type' => 'value'));
+    public $presetVars = array(
+        'produto_search' => array('type' => 'value'), 
+        'timestamp_search' => array('type' => 'time')
+        );
 
     public function find() {         
         $this->Paginator->settings = $this->paginate;
         $this->Prg->commonProcess();
-        $this->Paginator->settings['conditions'] = $this->Produto->parseCriteria($this->Prg->parsedParams());
-        $this->Produto->recursive = -1;
-        $this->set('produtos', $this->paginate());
+        $this->Paginator->settings['conditions'] = $this->Balanco->parseCriteria($this->Prg->parsedParams());
+        $this->Balanco->recursive = -1;
+        $this->set('balancos', $this->paginate());
     }
 
     public function index() {         
         $this->Paginator->settings = $this->paginate;
-        $this->Produto->recursive = -1;
-        $this->set('produtos', $this->paginate());
+        $this->Balanco->recursive = -1;
+        $this->set('balancos', $this->paginate());
+        $balancos = $this->Balanco->find('all');   
+        debug($balancos);
     }
 
     public function view($id = null) {
@@ -37,23 +42,23 @@ class ProdutosController extends AppController {
             throw new NotFoundException(__('Invalid'));
         }
 
-        $this->Produto->recursive = -1;
-        $produto = $this->Produto->findById($id);
-        if (!$produto) {
+        $this->Balanco->recursive = -1;
+        $balanco = $this->Balanco->findById($id);
+        if (!$balanco) {
             throw new NotFoundException(__('Invalid'));
         }
 
-        $this->set('produto', $produto);
+        $this->set('balanco', $balanco);
     }
 
     public function add() {
         if ($this->request->is('post')) {
-            $this->Produto->create();
-            if ($this->Produto->save($this->request->data)) {
-                $this->Session->setFlash(__('Produto cadastrado'));                      
+            $this->Balanco->create();
+            if ($this->Balanco->save($this->request->data)) {
+                $this->Session->setFlash(__('Balanco cadastrado'));                      
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Nao foi possivel cadastrar produto'));
+                $this->Session->setFlash(__('Nao foi possivel cadastrar balanco'));
             }
         }
     }
@@ -63,22 +68,22 @@ class ProdutosController extends AppController {
             throw new NotFoundException(__('Invalid'));
         }
 
-        $this->Produto->recursive = -1;
-        $produto = $this->Produto->findById($id);
-        if (!$produto) {
+        $this->Balanco->recursive = -1;
+        $balanco = $this->Balanco->findById($id);
+        if (!$balanco) {
             throw new NotFoundException(__('Invalid'));
         }
 
         if ($this->request->is(array('post', 'put'))) {
-            $this->Produto->id = $id;
-            if ($this->Produto->save($this->request->data)) {
+            $this->Balanco->id = $id;
+            if ($this->Balanco->save($this->request->data)) {
                 $this->Session->setFlash('Registro alterado');
                 return $this->redirect(array('action' => 'index'));
             }
         }
 
         if (!$this->request->data) {
-            $this->request->data = $produto;
+            $this->request->data = $balanco;
         }
     }
 
@@ -91,18 +96,20 @@ class ProdutosController extends AppController {
             throw new NotFoundException(__('Invalid id'));
         }
 
-        $this->Produto->recursive = -1;
-        $produto = $this->Produto->findById($id);
-        if (!$produto) {
+        $this->Balanco->recursive = -1;
+        $balanco = $this->Balanco->findById($id);
+        if (!$balanco) {
             throw new NotFoundException(__('Invalid id'));
         }
 
-        if ($this->Produto->delete($id)) {
-            $this->Session->setFlash('Produto removido');
+        if ($this->Balanco->delete($id)) {
+            $this->Session->setFlash('Balanco removido');
         } else {
-            $this->Session->setFlash('Não foi possivel remover produto');
+            $this->Session->setFlash('Não foi possivel remover balanco');
         }
         return $this->redirect(array('action' => 'index'));
     }
+    
+    
 
 }

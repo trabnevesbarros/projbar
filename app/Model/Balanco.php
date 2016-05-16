@@ -13,12 +13,38 @@ class Balanco extends AppModel {
     public $actsAs = array('Search.Searchable');
     
     public $filterArgs = array(
-        'produto_id_search' => array(
+        'produto_search' => array(
             'type' => 'ilike',
-            'field' => 'name',
+            'field' => 'produto_id',
+            'required' => false
+        ),
+        'timestamp_search' => array(
+            'type' => 'query',
+            'method' => 'findTimestamp',
             'required' => false
         )
     );
 
     public $belongsTo = array('Poduto' => array('dependent' => true));
+    
+    public function findTimestamp($data = array()) {
+        $this->Formacao->Behaviors->attach('Containable', array(
+                'autoFields' => false
+            )
+        );
+        $this->Formacao->DocentesFormacao->Behaviors->attach('Search.Searchable');
+        $query = $this->Formacao->DocentesFormacao->getQuery('all', array(
+            'conditions' => array(
+                array('DocentesFormacao.formacao_id' => $data['formacoes'])
+            ),
+            'fields' => array(
+                'docente_id'
+            ),
+            'contain' => array(
+                'Docente'
+            )
+        ));
+        return $query;
+    }
 }
+
