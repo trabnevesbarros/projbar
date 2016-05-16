@@ -16,6 +16,7 @@ class ProdutosController extends AppController {
         'Search.Prg',
         'Paginator'
     );
+    
     public $presetVars = array('name_search' => array('type' => 'value'));
 
     public function find() {         
