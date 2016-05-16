@@ -10,14 +10,14 @@ class Produto extends AppModel {
     
     public $validate = array(
         'name' => array(
-            array('rule' => 'notEmpty'),
+            array('rule' => 'notBlank'),
             array('rule' => 'isUnique')
         ),
         'quantidade' => array(
-            array('rule' => 'notEmpty')
+            array('rule' => 'notBlank')
         ),
         'preco' => array(
-            array('rule' => 'notEmpty')
+            array('rule' => 'notBlank')
         )
     );
     
