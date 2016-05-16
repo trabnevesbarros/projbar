@@ -51,10 +51,10 @@ class ProdutosController extends AppController {
         if ($this->request->is('post')) {
             $this->Produto->create();
             if ($this->Produto->save($this->request->data)) {
-                $this->Session->setFlash(__('Produto cadastrado'));                      
+                $this->Flash->set(__('Produto cadastrado'));                      
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Nao foi possivel cadastrar produto'));
+                $this->Flash->set(__('Nao foi possivel cadastrar produto'));
             }
         }
     }
@@ -73,7 +73,7 @@ class ProdutosController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             $this->Produto->id = $id;
             if ($this->Produto->save($this->request->data)) {
-                $this->Session->setFlash('Registro alterado');
+                $this->Flash->set('Registro alterado');
                 return $this->redirect(array('action' => 'index'));
             }
         }
@@ -99,9 +99,9 @@ class ProdutosController extends AppController {
         }
 
         if ($this->Produto->delete($id)) {
-            $this->Session->setFlash('Produto removido');
+            $this->Flash->set('Produto removido');
         } else {
-            $this->Session->setFlash('Não foi possivel remover produto');
+            $this->Flash->set('Não foi possivel remover produto');
         }
         return $this->redirect(array('action' => 'index'));
     }

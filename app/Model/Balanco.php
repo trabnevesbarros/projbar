@@ -12,6 +12,10 @@ class Balanco extends AppModel {
     
     public $actsAs = array('Search.Searchable');
     
+    public $virtualFields = array(
+        'total' => '"Balanco"."valor" * "Balanco"."quantidade"'
+    );
+    
     public $filterArgs = array(
         'produto_search' => array(
             'type' => 'ilike',
@@ -25,7 +29,7 @@ class Balanco extends AppModel {
         )
     );
 
-    public $belongsTo = array('Poduto' => array('dependent' => true));
+    public $belongsTo = array('Produto' => array('dependent' => true));
     
     public function findTimestamp($data = array()) {
         $this->Formacao->Behaviors->attach('Containable', array(

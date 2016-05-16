@@ -29,12 +29,12 @@ class BalancosController extends AppController {
         $this->set('balancos', $this->paginate());
     }
 
-    public function index() {         
+    public function index() {
         $this->Paginator->settings = $this->paginate;
-        $this->Balanco->recursive = -1;
+        $this->Balanco->recursive = 0;
         $this->set('balancos', $this->paginate());
         $balancos = $this->Balanco->find('all');   
-        debug($balancos);
+        //debug($balancos);
     }
 
     public function view($id = null) {
@@ -55,10 +55,10 @@ class BalancosController extends AppController {
         if ($this->request->is('post')) {
             $this->Balanco->create();
             if ($this->Balanco->save($this->request->data)) {
-                $this->Session->setFlash(__('Balanco cadastrado'));                      
+                $this->Flash->set(__('Balanco cadastrado'));                      
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Nao foi possivel cadastrar balanco'));
+                $this->Flash->set(__('Nao foi possivel cadastrar balanco'));
             }
         }
     }
@@ -77,7 +77,7 @@ class BalancosController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             $this->Balanco->id = $id;
             if ($this->Balanco->save($this->request->data)) {
-                $this->Session->setFlash('Registro alterado');
+                $this->Flash->set('Registro alterado');
                 return $this->redirect(array('action' => 'index'));
             }
         }
@@ -103,13 +103,11 @@ class BalancosController extends AppController {
         }
 
         if ($this->Balanco->delete($id)) {
-            $this->Session->setFlash('Balanco removido');
+            $this->Flash->set('Balanco removido');
         } else {
-            $this->Session->setFlash('Não foi possivel remover balanco');
+            $this->Flash->set('Não foi possivel remover balanco');
         }
         return $this->redirect(array('action' => 'index'));
     }
     
-    
-
 }
