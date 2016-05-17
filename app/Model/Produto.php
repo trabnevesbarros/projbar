@@ -14,10 +14,12 @@ class Produto extends AppModel {
             array('rule' => 'isUnique')
         ),
         'quantidade' => array(
-            array('rule' => 'notBlank')
+            array('rule' => 'notBlank'), 
+            array('rule' => 'numeric')
         ),
         'preco' => array(
-            array('rule' => 'notBlank')
+            array('rule' => 'notBlank'),
+            array('rule' => 'money')
         )
     );
     

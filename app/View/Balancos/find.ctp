@@ -1,6 +1,6 @@
-<h1>Produto</h1>
+<h1>Balan&ccedil;</h1>
 <?php
-echo $this->Form->create('Produto', array('url' => array_merge(array('action' => 'find'),$this->params['pass']),
+echo $this->Form->create('Balanco', array('url' => array_merge(array('action' => 'find'),$this->params['pass']),
 'inputDefaults' => array('type' => 'text', 'class' => 'txtSearch')));
 ?>
 
@@ -10,11 +10,18 @@ echo $this->Form->create('Produto', array('url' => array_merge(array('action' =>
     <tbody>
         <tr>
             <td><?php
-                echo $this->Form->input('name_search', array(
+                echo $this->Form->input('produto_name_search', array(
                     'div' => false,
-                    'label' => 'Nome'
-                        )
-                );
+                    'label' => 'Nome do Produto'
+                ));
+                ?>
+            </td>
+            <td><?php
+                echo $this->Form->input('data_search', array(
+                    'type' => 'date',
+                    'label' => 'Data', 
+                    'dateFormat' => 'DMY'
+                ));
                 ?>
             </td>
         </tr>
@@ -25,28 +32,39 @@ echo $this->Form->create('Produto', array('url' => array_merge(array('action' =>
 
 <table>
     <thead>
-    <th><?php echo $this->Paginator->sort('Produto.name', 'Nome'); ?></th>
-    <th><?php echo $this->Paginator->sort('Produto.quantidade', 'Quantidade'); ?></th>
-    <th><?php echo $this->Paginator->sort('Produto.preco', 'Preço'); ?></th>
+    <th><?php echo $this->Paginator->sort('Produto.name', 'Nome do Produto'); ?></th>
+    <th><?php echo $this->Paginator->sort('Balanco.acao', 'E/S'); ?></th>
+    <th><?php echo $this->Paginator->sort('Balanco.valor', 'Valor'); ?></th>
+    <th><?php echo $this->Paginator->sort('Balanco.quantidade', 'Quantidade'); ?></th>
+    <th><?php echo $this->Paginator->sort('Balanco.total', 'Total'); ?></th>
+    <th><?php echo $this->Paginator->sort('Balanco.data', 'Data/Hora'); ?></th>
     <th colspan="2">Ação</th>
 </thead>
     <tbody>
-        <?php foreach ($produtos as $produto):?>
+        <?php foreach ($balancos as $balanco):?>
             <tr>        
-                <td><?php echo $this->Html->link($produto['Produto']['name'], array('action' => 'view', $produto['Produto']['id']));  ?></td>
-                <td><?php echo $produto['Produto']['quantidade'] ?></td>
-                <td><?php echo $produto['Produto']['preco'] ?></td>        
-                <td><?php echo $this->Html->link('Alterar', array('action' => 'edit', $produto['Produto']['id']));?></td>
-                <td><?php echo $this->Form->postLink('Remover', array('action' => 'delete', $produto['Produto']['id']), array('confirm' => 'Você tem certeza?')); ?></td>
+                <td><?php echo $this->Html->link($balanco['Produto']['name'], array('action' => 'view', $balanco['Balanco']['id']));  ?></td>
+                <td><?php 
+                    if (strtolower($balanco['Balanco']['acao']) == 'e') { echo 'Entrada';
+                    } else if (strtolower($balanco['Balanco']['acao']) == 's') { echo 'Saida';
+                    } else { echo 'Inválido';} 
+                    ?>
+                </td>
+                <td><?php echo $balanco['Balanco']['valor'] ?></td>
+                <td><?php echo $balanco['Balanco']['quantidade'] ?></td>
+                <td><?php echo $balanco['Balanco']['total'] ?></td>
+                <td><?php echo date('d/m/Y - h:i:s A', strtotime($balanco['Balanco']['data'])) ?></td>
+                <td><?php echo $this->Html->link('Alterar', array('action' => 'edit', $balanco['Balanco']['id']));?></td>
+                <td><?php echo $this->Form->postLink('Remover', array('action' => 'delete', $balanco['Balanco']['id']), array('confirm' => 'Você tem certeza?')); ?></td>
             </tr>
             
         <?php endforeach; ?>  
     </tbody>
 </table>
 </br>
-<?php echo $this->Html->link('Adicionar produto', array('action' => 'add')); 
+<?php echo $this->Html->link('Adicionar balanco', array('action' => 'add')); 
 echo '<br>';
-echo $this->Html->link('Pesquisar', array('action' => 'find'));
+echo $this->Html->link('Voltar', array('action' => 'index'));
 ?>
 
 <div class="paging">

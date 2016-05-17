@@ -37,13 +37,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </head>
 <body>
 	<div id="container">
-		<div id="header" class="links">
-			<?php
-                        echo $this->Html->link('PRODUTOS', array('action'=>'index', 'controller'=>'produtos')); 
-                        echo ' '.$this->Html->link('BALANÇOS', array('action'=>'index', 'controller'=>'balancos'));
-                        echo ' '.$this->Html->link('CAIXA', array('action'=>'add', 'controller'=>'balancos'));
-                        echo ' '.$this->Html->link('GERAR RELATÓRIO', array('action'=>'index', 'controller'=>'balancos'));
-                        ?>
+		<div id="header">
+			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 		</div>
 		<div id="content">
 

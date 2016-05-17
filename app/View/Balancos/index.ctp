@@ -12,17 +12,17 @@
     <tbody>
         <?php foreach ($balancos as $balanco):?>
             <tr>        
-                <td><?php echo $this->Html->link($balanco['Produto']['name'], array('action' => 'view', $balanco['Balanco']['id']));  ?></td>
+                <td><?php echo $this->Html->link($balanco['Produto']['name'], array('controller' => 'Produtos', 'action' => 'view', $balanco['Balanco']['produto_id']));  ?></td>
                 <td><?php 
                     if (strtolower($balanco['Balanco']['acao']) == 'e') { echo 'Entrada';
                     } else if (strtolower($balanco['Balanco']['acao']) == 's') { echo 'Saida';
                     } else { echo 'Inválido';} 
                     ?>
                 </td>
-                <td><?php echo $balanco['Balanco']['valor'] ?></td>
+                <td><?php echo 'R$ '.number_format($balanco['Balanco']['valor'], 2) ?></td>
                 <td><?php echo $balanco['Balanco']['quantidade'] ?></td>
-                <td><?php echo $balanco['Balanco']['total'] ?></td>
-                <td><?php echo $balanco['Balanco']['data'] ?></td>
+                <td><?php echo 'R$ '.number_format($balanco['Balanco']['total'], 2) ?></td>
+                <td><?php echo date('d/m/Y - h:i:s A', strtotime($balanco['Balanco']['data'])) ?></td>
                 <td><?php echo $this->Html->link('Alterar', array('action' => 'edit', $balanco['Balanco']['id']));?></td>
                 <td><?php echo $this->Form->postLink('Remover', array('action' => 'delete', $balanco['Balanco']['id']), array('confirm' => 'Você tem certeza?')); ?></td>
             </tr>

@@ -8,47 +8,37 @@
 
 class Balanco extends AppModel {
 
-    public $validate = array();
-    
+    public $validate = array(
+        'valor' => array(
+            array('rule' => 'notBlank'),
+            array('rule' => 'money')
+        ),
+        'quantidade' => array(
+            array('rule' => 'notBlank'), 
+            array('rule' => 'numeric')
+        )
+    );
     public $actsAs = array('Search.Searchable');
-    
     public $virtualFields = array(
         'total' => '"Balanco"."valor" * "Balanco"."quantidade"'
     );
-    
     public $filterArgs = array(
-        'produto_search' => array(
+        'produto_name_search' => array(
             'type' => 'ilike',
-            'field' => 'produto_id',
+            'field' => 'Produto.name',
             'required' => false
         ),
-        'timestamp_search' => array(
+        'data_search' => array(
             'type' => 'query',
-            'method' => 'findTimestamp',
-            'required' => false
+            'method' => 'findTimestamp'
         )
     );
-
-    public $belongsTo = array('Produto' => array('dependent' => true));
     
-    public function findTimestamp($data = array()) {
-        $this->Formacao->Behaviors->attach('Containable', array(
-                'autoFields' => false
-            )
-        );
-        $this->Formacao->DocentesFormacao->Behaviors->attach('Search.Searchable');
-        $query = $this->Formacao->DocentesFormacao->getQuery('all', array(
-            'conditions' => array(
-                array('DocentesFormacao.formacao_id' => $data['formacoes'])
-            ),
-            'fields' => array(
-                'docente_id'
-            ),
-            'contain' => array(
-                'Docente'
-            )
-        ));
-        return $query;
-    }
-}
+    public $belongsTo = array('Produto' => array('dependent' => true));
 
+    public function findTimestamp($data = array()) {
+        $datestr = $data['data_search']['year'] . '-' . $data['data_search']['month'] . '-' . $data['data_search']['day'];
+        return array('DATE("Balanco.data")' => $datestr);
+    }
+
+}
