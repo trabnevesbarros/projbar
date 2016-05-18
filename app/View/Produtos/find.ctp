@@ -35,7 +35,7 @@ echo $this->Form->create('Produto', array('url' => array_merge(array('action' =>
             <tr>        
                 <td><?php echo $this->Html->link($produto['Produto']['name'], array('action' => 'view', $produto['Produto']['id']));  ?></td>
                 <td><?php echo $produto['Produto']['quantidade'] ?></td>
-                <td><?php echo $produto['Produto']['preco'] ?></td>        
+                <td><?php echo 'R$ '.number_format($produto['Produto']['preco'], 2) ?></td>        
                 <td><?php echo $this->Html->link('Alterar', array('action' => 'edit', $produto['Produto']['id']));?></td>
                 <td><?php echo $this->Form->postLink('Remover', array('action' => 'delete', $produto['Produto']['id']), array('confirm' => 'Você tem certeza?')); ?></td>
             </tr>

@@ -18,7 +18,7 @@ class ProdutosController extends AppController {
     );
     
     public $presetVars = array('name_search' => array('type' => 'value'));
-
+    
     public function find() {         
         $this->Paginator->settings = $this->paginate;
         $this->Prg->commonProcess();
@@ -46,7 +46,7 @@ class ProdutosController extends AppController {
 
         $this->set('produto', $produto);
     }
-
+    
     public function add() {
         if ($this->request->is('post')) {
             $this->Produto->create();

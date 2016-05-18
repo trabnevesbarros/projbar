@@ -9,7 +9,7 @@
 class BalancosController extends AppController {
 
     public $uses = array('Balanco', 'Produto');
-    public $helpers = array('Html', 'Form', 'Paginator', 'Time');
+    public $helpers = array('Html', 'Form', 'Paginator', 'Time', 'Js');
     public $paginate = array(
         'limit' => 12
     );
@@ -25,11 +25,10 @@ class BalancosController extends AppController {
     );
     
     public function relatorio() {
-        //$this->Paginator->settings = array('limit' => '');
         $this->Prg->commonProcess();
-        $this->Paginator->settings['conditions'] = $this->Balanco->parseCriteria($this->Prg->parsedParams());
+        $conditions = $this->Balanco->parseCriteria($this->Prg->parsedParams());
         if ($this->request->data) {
-            $this->set('balancos', $this->paginate());
+            $this->set('balancos', $this->Balanco->find('all', array('conditions' => $conditions)));
         }
         
     }
@@ -59,8 +58,11 @@ class BalancosController extends AppController {
         $this->set('balanco', $balanco);
     }
 
-    public function add() {
+    public function add($produtoId = null) {
         $this->Produto->recursive = -1;
+        if($produtoId) {
+            $this->set('produto', $this->Produto->findById());
+        }
         $this->set('produtos', $this->Produto->find('list'));
         if ($this->request->is('post')) {
             $this->Balanco->create();
