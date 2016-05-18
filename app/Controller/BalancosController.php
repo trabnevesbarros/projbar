@@ -7,6 +7,7 @@
  */
 
 class BalancosController extends AppController {
+
     public $uses = array('Balanco', 'Produto');
     public $helpers = array('Html', 'Form', 'Paginator', 'Time');
     public $paginate = array(
@@ -17,11 +18,23 @@ class BalancosController extends AppController {
         'Paginator'
     );
     public $presetVars = array(
-        'produto_name_search' => array('type' => 'value'), 
-        'data_search' => array('type' => 'value')
-        );
+        'produto_name_search' => array('type' => 'value'),
+        'data_search' => array('type' => 'value'),
+        'data_s_search' => array('type' => 'value'),
+        'data_f_search' => array('type' => 'value')
+    );
+    
+    public function relatorio() {
+        //$this->Paginator->settings = array('limit' => '');
+        $this->Prg->commonProcess();
+        $this->Paginator->settings['conditions'] = $this->Balanco->parseCriteria($this->Prg->parsedParams());
+        if ($this->request->data) {
+            $this->set('balancos', $this->paginate());
+        }
+        
+    }
 
-    public function find() {         
+    public function find() {
         $this->Paginator->settings = $this->paginate;
         $this->Prg->commonProcess();
         $this->Paginator->settings['conditions'] = $this->Balanco->parseCriteria($this->Prg->parsedParams());
@@ -51,9 +64,24 @@ class BalancosController extends AppController {
         $this->set('produtos', $this->Produto->find('list'));
         if ($this->request->is('post')) {
             $this->Balanco->create();
-            if ($this->Balanco->save($this->request->data)) {
-                $this->Flash->set(__('Balanco cadastrado'));                      
-                $this->redirect(array('action' => 'index'));
+            $produto = $this->Produto->findById($this->request->data['Balanco']['produto_id']);
+            if ($produto) {
+                if ($this->request->data['Balanco']['acao'] == 'E') {
+                    $produto['Produto']['quantidade'] += $this->request->data['Balanco']['quantidade'];
+                } else if ($this->request->data['Balanco']['acao'] == 'S') {
+                    $produto['Produto']['quantidade'] -= $this->request->data['Balanco']['quantidade'];
+                }
+                if ($produto['Produto']['quantidade'] >= 0) {
+                    if ($this->Balanco->save($this->request->data)) {
+                        $this->Produto->save($produto);
+                        $this->Flash->set(__('Balanco cadastrado'));
+                        $this->redirect(array('action' => 'index'));
+                    } else {
+                        $this->Flash->set(__('Nao foi possivel cadastrar balanco'));
+                    }
+                } else {
+                    $this->Flash->set(__('Nao foi possivel cadastrar balanco'));
+                }
             } else {
                 $this->Flash->set(__('Nao foi possivel cadastrar balanco'));
             }
@@ -108,5 +136,5 @@ class BalancosController extends AppController {
         }
         return $this->redirect(array('action' => 'index'));
     }
-    
+
 }

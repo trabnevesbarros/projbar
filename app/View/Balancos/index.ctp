@@ -1,4 +1,4 @@
-<h1>Balanco</h1>
+<h1>Balan&ccedil;o</h1>
 <table>
     <thead>
     <th><?php echo $this->Paginator->sort('Produto.name', 'Nome do Produto'); ?></th>
