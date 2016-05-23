@@ -16,7 +16,12 @@ class Balanco extends AppModel {
         'quantidade' => array(
             array('rule' => 'notBlank'), 
             array('rule' => 'numeric')
+        ),
+        'produto_id' => array(
+            array('rule' => 'notBlank'), 
+            array('rule' => 'numeric')
         )
+        
     );
     public $actsAs = array('Search.Searchable');
     public $virtualFields = array(

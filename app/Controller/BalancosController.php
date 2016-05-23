@@ -15,7 +15,8 @@ class BalancosController extends AppController {
     );
     public $components = array(
         'Search.Prg',
-        'Paginator'
+        'Paginator', 
+        'RequestHandler'
     );
     public $presetVars = array(
         'produto_name_search' => array('type' => 'value'),
@@ -59,11 +60,7 @@ class BalancosController extends AppController {
     }
 
     public function add($produtoId = null) {
-        $this->Produto->recursive = -1;
-        if($produtoId) {
-            $this->set('produto', $this->Produto->findById());
-        }
-        $this->set('produtos', $this->Produto->find('list'));
+        $this->set('produtos', array('' => '--') + $this->Produto->find('list', array('order' => 'name')));
         if ($this->request->is('post')) {
             $this->Balanco->create();
             $produto = $this->Produto->findById($this->request->data['Balanco']['produto_id']);
@@ -138,5 +135,20 @@ class BalancosController extends AppController {
         }
         return $this->redirect(array('action' => 'index'));
     }
+    
+    public function getPreco($id = null) {
+        if (!$id) {
+            throw new NotFoundException(__('Invalid'));
+        }
 
+        $this->Produto->recursive = -1;
+        $produto = $this->Produto->findById($id);
+        if (!$produto) {
+            throw new NotFoundException(__('Invalid'));
+        }
+        $this->layout = '';
+        $this->autoRender = false;
+	
+        return $produto['Produto']['preco'];
+    }
 }

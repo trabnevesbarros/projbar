@@ -7,5 +7,5 @@ echo $this->Form->input('acao', array('label' => 'Ação', 'type' => 'select', '
 echo $this->Form->input('valor', array('label' => 'Valor'));
 echo $this->Form->input('quantidade', array('label' => 'Quantidade'));
 echo $this->Form->end('Salvar');
-echo $this->Html->link('teste', array('onclick' => 'teste()'))
+echo $this->Html->scriptBlock("document.getElementById('BalancoProdutoId').setAttribute('onchange', 'autoSetValor();');");
 ?>
