@@ -65,9 +65,9 @@ class BalancosController extends AppController {
             $this->Balanco->create();
             $produto = $this->Produto->findById($this->request->data['Balanco']['produto_id']);
             if ($produto) {
-                if ($this->request->data['Balanco']['acao'] == 'E') {
+                if ($this->request->data['Balanco']['acao'] == 'E' && $produto['Produto']['contabilizar'] == true) {
                     $produto['Produto']['quantidade'] += $this->request->data['Balanco']['quantidade'];
-                } else if ($this->request->data['Balanco']['acao'] == 'S') {
+                } else if ($this->request->data['Balanco']['acao'] == 'S' && $produto['Produto']['contabilizar'] == true) {
                     $produto['Produto']['quantidade'] -= $this->request->data['Balanco']['quantidade'];
                 }
                 if ($produto['Produto']['quantidade'] >= 0) {

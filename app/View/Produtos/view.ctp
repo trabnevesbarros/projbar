@@ -4,5 +4,6 @@
     echo h($produto['Produto']['name']);
     echo '<br>Preço: R$ ' . h(number_format($produto['Produto']['preco'], 2));
     echo '<br>Quantidade: ' . h($produto['Produto']['quantidade']);
+    echo '<br>Contabilizar: '. h($produto['Produto']['contabilizar']);
     ?>
 </p>

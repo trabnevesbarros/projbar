@@ -4,4 +4,5 @@ echo $this->Form->create('Produto', array('inputDefaults' => array('type' => 'te
 echo $this->Form->input('name', array('label' => 'Nome'));
 echo $this->Form->input('quantidade', array('label' => 'Quantidade', 'value' => 0, 'type' => 'hidden'));
 echo $this->Form->input('preco', array('label' => 'Preço'));
+echo $this->Form->input('contabilizar', array('label' => 'Contabilizar', 'type' => 'checkbox', 'checked' => 'checked'));
 echo $this->Form->end('Salvar');
